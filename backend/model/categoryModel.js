@@ -5,7 +5,7 @@ const categorySchema = mongoose.Schema(
     name: { type: String, required: true },
     description: { type: String },
   },
-  { timesTamps: true }
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("categoryModel", categorySchema);

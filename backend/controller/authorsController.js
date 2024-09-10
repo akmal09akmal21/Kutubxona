@@ -3,7 +3,7 @@ const authorModel = require("../model/authorModel");
 const addAuthor = async (req, res) => {
   try {
     const { name, biography } = req.body;
-    const muallif = await categoryModel.findOne({ name });
+    const muallif = await authorModel.findOne({ name });
     if (muallif) {
       return res
         .status(404)
@@ -20,7 +20,7 @@ const addAuthor = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "addAuthors ctr dan  error ",
-      error,
+      error: error.message,
     });
   }
 };
@@ -44,7 +44,7 @@ const getAuthors = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "get muallif api dan xatolik",
-      error,
+      error: error.message,
     });
   }
 };
@@ -61,47 +61,50 @@ const singleAuthor = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "one Author api dan xatolik",
-      error,
+      error: error.message,
     });
   }
 };
 const updateAuthor = async (req, res) => {
   try {
     const muallifOne = req.params.id;
-    const newMuallif = await categoryModel.findById(muallifOne);
+    const newMuallif = await authorModel.findById(muallifOne);
     if (!newMuallif) {
       return res
         .status(401)
         .json({ success: false, message: "bu id da muallif topilmadi" });
     }
-    const newM = await categoryModel.findByIdAndUpdate(newMuallif, req.body, {
+    const newM = await authorModel.findByIdAndUpdate(newMuallif, req.body, {
       new: true,
     });
     res.status(200).json({ success: true, message: "ozgartirildi", newM });
   } catch (error) {
-    return res
-      .status(500)
-      .json({ success: false, message: "update apidan error", error });
+    return res.status(500).json({
+      success: false,
+      message: "update apidan error",
+      error: error.message,
+    });
   }
 };
 
 const deletAuthor = async (req, res) => {
   try {
     const delID = req.params.id;
-    const del = await categoryModel.findById(delID);
+    const del = await authorModel.findById(delID);
     if (!del) {
       return res
         .status(401)
         .json({ success: false, message: "bu id da muallif topilmadi" });
     }
-    await categoryModel.findByIdAndDelete(del);
+    await authorModel.findByIdAndDelete(del);
     res.status(200).json({ success: true, message: "muallif o'chiril" });
   } catch (error) {
     console.log(error);
-    res
-      .status(500)
-      .json({ success: false, message: "delet apidan error", error });
-    error;
+    res.status(500).json({
+      success: false,
+      message: "delet apidan error",
+      error: error.message,
+    });
   }
 };
 

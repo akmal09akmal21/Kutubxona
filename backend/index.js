@@ -2,16 +2,22 @@ const express = require("express");
 const app = express();
 const dotenv = require("dotenv");
 const dataDB = require("./db/db");
+const morgan = require("morgan");
 const categoryRouter = require("./routes/categoryRouter");
+const authorRouter = require("./routes/authorRouter");
+const bookRouter = require("./routes/bookRouter");
+// ***************
+app.use(morgan("dev"));
+app.use(express.json());
 dotenv.config();
 dataDB();
-
-// ***************
-app.use(express.json());
-
 // *************?
-app.use("/", categoryRouter);
 
+app.use("/", categoryRouter);
+app.use("/", authorRouter);
+app.use("/", bookRouter);
+
+// *******************
 const port = process.env.PORT || 5000;
 
 app.listen(5000, () => {
