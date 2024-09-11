@@ -9,7 +9,7 @@ const addBook = async (req, res) => {
         .status(401)
         .json({ success: false, message: "Bu kitob tizimda mavjud" });
     }
-    const newBook = await bookModel.create(req.body);
+    const newBook = await bookModel.create(req.body)
     res
       .status(201)
       .json({ success: true, message: "kitob qo'shildi", newBook });
@@ -103,5 +103,23 @@ const deletBook = async (req, res) => {
     });
   }
 };
+const searchBook = async(req,res)=>{
+  try {
+    let dataB =await bookModel.find({
+      "$or":[
+        {title:{$regex:req.params.key}},
+        {summary:{$regex:req.params.key}},
+        {name:{$regex:req.params.key}}
+       
+      ]
+    })
+    res.send(dataB)
+    
+  } catch (error) {
+    console.log(error)
+    
+  }
+}
 
-module.exports = { addBook, getBooks, singleBook, updateBook, deletBook };
+
+module.exports = { addBook, getBooks, singleBook, updateBook, deletBook ,searchBook};

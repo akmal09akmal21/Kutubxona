@@ -2,7 +2,7 @@ const categoryModel = require("../model/categoryModel");
 
 const addCategory = async (req, res) => {
   try {
-    const { name, description } = req.body;
+    const { name } = req.body;
     const category = await categoryModel.findOne({ name });
     if (category) {
       return res.status(404).json({ success: false, message: "bu tzimda bor" });
