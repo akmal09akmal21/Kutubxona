@@ -1,13 +1,19 @@
 const bookModel = require("../model/bookModel");
-
+const mongoose = require("mongoose")
 const addBook = async (req, res) => {
   try {
-    const { title } = req.body;
+    const { title,category,author } = req.body;
     const existbook = await bookModel.findOne({ title });
     if (existbook) {
       return res
         .status(401)
         .json({ success: false, message: "Bu kitob tizimda mavjud" });
+    }
+    if (!mongoose.Types.ObjectId.isValid(category)) {
+      return res.status(400).json({ message: 'Invalid category ID.' });
+    }
+    if (!mongoose.Types.ObjectId.isValid(author)) {
+      return res.status(400).json({ message: 'Invalid category ID.' });
     }
     const newBook = await bookModel.create(req.body)
     res

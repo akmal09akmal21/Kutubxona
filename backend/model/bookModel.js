@@ -6,7 +6,7 @@ const bookSchema = mongoose.Schema(
     title: { type: String, required: true },
     author: { type: ObjectId, ref: "authorModel", required:true },
     category: { type: ObjectId, ref: "categoryModel", required: true },
-    publishedYear: { type: Number },
+    publishedYear: { type: String },
     summary: { type: String },
   },
   { timestamps: true }
