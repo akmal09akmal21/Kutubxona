@@ -1,8 +1,8 @@
 const bookModel = require("../model/bookModel");
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 const addBook = async (req, res) => {
   try {
-    const { title,category,author } = req.body;
+    const { title, category, author } = req.body;
     const existbook = await bookModel.findOne({ title });
     if (existbook) {
       return res
@@ -10,12 +10,12 @@ const addBook = async (req, res) => {
         .json({ success: false, message: "Bu kitob tizimda mavjud" });
     }
     if (!mongoose.Types.ObjectId.isValid(category)) {
-      return res.status(400).json({ message: 'Invalid category ID.' });
+      return res.status(400).json({ message: "Invalid category ID." });
     }
     if (!mongoose.Types.ObjectId.isValid(author)) {
-      return res.status(400).json({ message: 'Invalid category ID.' });
+      return res.status(400).json({ message: "Invalid category ID." });
     }
-    const newBook = await bookModel.create(req.body)
+    const newBook = await bookModel.create(req.body);
     res
       .status(201)
       .json({ success: true, message: "kitob qo'shildi", newBook });
@@ -109,23 +109,55 @@ const deletBook = async (req, res) => {
     });
   }
 };
-const searchBook = async(req,res)=>{
+const searchBook = async (req, res) => {
   try {
-    let dataB =await bookModel.find({
-      "$or":[
-        {title:{$regex:req.params.key}},
-        {summary:{$regex:req.params.key}},
-        {name:{$regex:req.params.key}}
-       
-      ]
-    })
-    res.send(dataB)
-    
+    let dataB = await bookModel.find({
+      $or: [
+        { title: { $regex: req.params.key } },
+        { summary: { $regex: req.params.key } },
+        { name: { $regex: req.params.key } },
+      ],
+    });
+    res.send(dataB);
   } catch (error) {
-    console.log(error)
-    
+    console.log(error);
   }
-}
+};
 
+const getBooksByCategory = async (req, res) => {
+  try {
+    const booksCategory = await bookModel
+      .find({ category: req.params.categoryId })
+      .populate("category");
+    res
+      .status(200)
+      .json({ success: true, message: "category success", booksCategory });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
+};
+const getBooksByAuthors = async (req, res) => {
+  try {
+    const booksAuthors = await bookModel
+      .find({ author: req.params.authorId })
+      .populate("author");
+    res
+      .status(200)
+      .json({ success: true, message: "author success", booksAuthors });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
+};
 
-module.exports = { addBook, getBooks, singleBook, updateBook, deletBook ,searchBook};
+module.exports = {
+  addBook,
+  getBooks,
+  singleBook,
+  updateBook,
+  deletBook,
+  searchBook,
+  getBooksByCategory,
+  getBooksByAuthors,
+};
