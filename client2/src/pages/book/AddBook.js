@@ -15,7 +15,7 @@ const AddBook = () => {
   const [summary, setSumarry] = useState("");
 
   //submit the htmlForm
-  const submithtmlForm = async (e) => {
+  const submitForm = async (e) => {
     e.preventDefault();
     try {
       const { data } = await axios.post("http://localhost:5000/books", {
@@ -73,7 +73,7 @@ const AddBook = () => {
     <>
       <div className="max-w-lg lg:ms-auto mx-auto text-center ">
         <div className="py-16 px-7 rounded-md bg-white">
-          <form className="" onSubmit={submithtmlForm}>
+          <form className="" onSubmit={submitForm}>
             <div className="grid w-full grid-cols-1 gap-6">
               {/* <input type="text" id="title" name="title" placeholder="title *" className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-700 "/> */}
 
