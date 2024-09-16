@@ -7,9 +7,7 @@ const BookList = () => {
 
   const fetchBooks = async () => {
     try {
-      const { data } = await axios.get("http://localhost:5000/books", {
-        withCredentials: true,
-      });
+      const { data } = await axios.get("http://localhost:5000/books" );
       setKitoblar(data.books);
     } catch (error) {
       console.log(error.response.data);
@@ -23,7 +21,7 @@ const BookList = () => {
   return (
     <>
       <div>
-        <h2>Books List</h2>
+          
 
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
           <div className="flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between pb-4">

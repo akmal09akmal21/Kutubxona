@@ -6,10 +6,12 @@ import "react-toastify/dist/ReactToastify.css";
 import BookList from "./pages/book/BookList";
 import AddBook from "./pages/book/AddBook";
 import AddAuthor from "./pages/author/AddAuthor";
+import BookLists from "./pages/book/BookLists";
 function App() {
   return (
     <div className="App">
       <ToastContainer />
+      <BookLists/>
       <Routes>
         <Route path="/" element={<BookList />} />
         <Route path="/addbook" element={<AddBook />} />

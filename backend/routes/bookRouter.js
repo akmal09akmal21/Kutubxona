@@ -9,6 +9,7 @@ const {
   searchBook,
   getBooksByCategory,
   getBooksByAuthors,
+
 } = require("../controller/bookController");
 
 router.post("/books", addBook);
@@ -19,4 +20,5 @@ router.delete("/books/:id", deletBook);
 router.get("/books/search/:key", searchBook);
 router.get("/books/category/:categoryId", getBooksByCategory);
 router.get("/books/author/:authorId", getBooksByAuthors);
+
 module.exports = router;

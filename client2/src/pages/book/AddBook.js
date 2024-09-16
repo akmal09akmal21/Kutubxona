@@ -59,9 +59,7 @@ const AddBook = () => {
   };
   const getAuthors = async () => {
     try {
-      const { data } = await axios.get("http://localhost:5000/authors", {
-        withCredentials: true,
-      });
+      const { data } = await axios.get("http://localhost:5000/authors");
       setMualliflar(data.mualliflar);
     } catch (error) {
       console.log(error.response.data);
