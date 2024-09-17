@@ -29,29 +29,28 @@ export default function BookLists() {
   const [kitoblar, setKitoblar] = useState([]);
   console.log(kitoblar)
   const [authors,setAuthors] = useState([])
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [categories,setCategories] = useState([])
+  const [authorSelected, setSelectedAuthor] = useState('');
+  const [categorySelected, setSelectedCategory] = useState('');
   const fetchBooks = async () => {
     try {
       const { data } = await axios.get("http://localhost:5000/books" );
       setKitoblar(data.books);
     } catch (error) {
-      console.log(error.response.data);
-      toast.error(error.response.data);
+      console.log(error.response.data.message);
+      toast.error(error.response.data.message);
     }
   };
   useEffect(() => {
     fetchBooks();
     getAuthors()
+    getCategories()
+    fetchBooksByAuthor()
     fetchBooksByCategory()
   }, []);
 
-  
 
-
-
-  
-    
-const getAuthors = async()=>{
+  const getAuthors = async()=>{
     try {
         const {data}= await axios.get("http://localhost:5000/authors")
         if(data.success === true){
@@ -61,8 +60,18 @@ const getAuthors = async()=>{
         
     }
 }
-  // Kategoriya bo'yicha kitoblarni olish
-  const fetchBooksByCategory = async (authorId) => {
+const getCategories = async()=>{
+  try {
+      const {data}= await axios.get("http://localhost:5000/categories")
+      if(data.success === true){
+         setCategories(data.categories)
+      }
+  } catch (error) {
+      
+  }
+}
+  // author bo'yicha kitoblarni olish
+  const fetchBooksByAuthor = async (authorId) => {
     try {
       const response = await axios.get(`http://localhost:5000/books/author/${authorId}`);
       setKitoblar(response.data.booksAuthors);
@@ -71,7 +80,28 @@ const getAuthors = async()=>{
       console.error('Error fetching books:', error);
     }
   };
+    const handleAuthorChange = (e) => {
+    const authorId = e.target.value;
+    setSelectedAuthor(authorId);
+    if (authorId) {
+      fetchBooksByAuthor(authorId);
+    } else if(authorId === " "){
+      
+      setKitoblar([]);
+    }
+  };
+
   
+ // category bo'yicha kitoblarni olish
+ const fetchBooksByCategory = async (categoryId) => {
+  try {
+    const response = await axios.get(`http://localhost:5000/books/category/${categoryId}`);
+    setKitoblar(response.data.booksCategory);
+    console.log(response.data)
+  } catch (error) {
+    console.error('Error fetching books:', error);
+  }
+};
 
 
   const handleCategoryChange = (e) => {
@@ -79,11 +109,35 @@ const getAuthors = async()=>{
     setSelectedCategory(categoryId);
     if (categoryId) {
       fetchBooksByCategory(categoryId);
-    } else {
+    } else if(categoryId === " "){
+      
       setKitoblar([]);
     }
   };
 
+
+
+// qidiruv filteri
+const [search1,setSearch] = useState("")
+const handleSearch = async(e)=>{
+  const query = e.target.value;
+  setSearch(query)
+  if(query.length>0){
+    try {
+      const res = await axios.get(`http://localhost:5000/books`);
+      const {data} = await axios.get(`http://localhost:5000/books/search?query=${query}`);
+     
+     
+      setKitoblar(data.dataB); // Natijalarni state-ga yozamiz
+    } catch (error) {
+      console.error('Xato:', error);
+    }
+  } else if(query.length ==="") {
+    const res = await axios.get(`http://localhost:5000/books`);
+    setKitoblar(res.books); // Agar qidiruv so'zi bo'sh bo'lsa, natijalarni tozalash
+  }
+  
+}
 
 
   return (
@@ -118,8 +172,8 @@ const getAuthors = async()=>{
                 <h3 className="sr-only">Categories</h3>
                 <ul role="list" className="px-2 py-3 font-medium text-gray-900">
                   {authors.map((el) => (
-                    <li key={el.name}>
-                      <a href={el.href} className="block px-2 py-3">
+                    <li key={el._id}>
+                      <a  className="block px-2 py-3">
                         {el.name}
                       </a>
                     </li>
@@ -133,7 +187,7 @@ const getAuthors = async()=>{
         </Dialog>
 
         <main className="mx-auto  px-4 sm:px-6 lg:px-8">
-          <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 ">
+          <div className="menu1 flex items-baseline  justify-between border-b border-gray-200 pb-6 ">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900">New Arrivals</h1>
         
             <div className="relative items-center">
@@ -153,47 +207,29 @@ const getAuthors = async()=>{
                 </svg>
               </div>
               <input
+              value={search1}
+              onChange={handleSearch}
                 type="text"
                 id="table-search"
                 className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Search htmlFor items"
+                placeholder="kitoblar qidirish..."
               />
             </div>
             <div className="flex items-center">
-              <Menu as="div" className="relative inline-block text-left">
-                <div>
-                  <MenuButton className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
-                    Sort
-                    <ChevronDownIcon
-                      aria-hidden="true"
-                      className="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
-                    />
-                  </MenuButton>
-                </div>
-
-                <MenuItems
-                  transition
-                  className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
-                >
-                  <div className="py-1">
-                    {authors.map((option) => (
-                      <MenuItem key={option.name}>
-                        <a
-                          href={option.href}
-                          className={classNames(
-                            option.current ? 'font-medium text-gray-900' : 'text-gray-500',
-                            'block px-4 py-2 text-sm data-[focus]:bg-gray-100',
-                          )}
-                        >
-                          {option.name}
-                        </a>
-                      </MenuItem>
-                    ))}
-                  </div>
-                </MenuItems>
-              </Menu>
-              <select value={selectedCategory} onChange={handleCategoryChange} class="py-3 px-4 pe-9 block w-full bg-gray-100 border-transparent rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none">
-  <option value={kitoblar}>All Authors</option>
+             
+              <select value={categorySelected} onChange={handleCategoryChange} class="category1 py-3 px-4 pe-9 block w-full bg-gray-100 border-transparent rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none">
+  <option value=" ">All Category</option>
+  {
+    categories.map((cat)=>(
+      <option key={cat._id} value={cat._id}>
+      {cat.name}
+    </option>
+    ))
+  }
+</select>
+    
+<select value={authorSelected} onChange={handleAuthorChange} class=" author1 py-3 px-4 pe-9 block w-full bg-gray-100 border-transparent rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none">
+  <option value=" ">All Authors</option>
   {
     authors.map((author)=>(
       <option key={author._id} value={author._id}>
@@ -203,10 +239,10 @@ const getAuthors = async()=>{
   }
 </select>
 
-              <button type="button" className="-m-2 ml-5 p-2 text-gray-400 hover:text-gray-500 sm:ml-7">
+              {/* <button type="button" className="-m-2 ml-5 p-2 text-gray-400 hover:text-gray-500 sm:ml-7">
                 <span className="sr-only">View grid</span>
                 <Squares2X2Icon aria-hidden="true" className="h-5 w-5" />
-              </button>
+              </button> */}
               <button
                 type="button"
                 onClick={() => setMobileFiltersOpen(true)}
@@ -216,6 +252,7 @@ const getAuthors = async()=>{
                 <FunnelIcon aria-hidden="true" className="h-5 w-5" />
               </button>
             </div>
+            
           </div>
 
           <section aria-labelledby="products-heading" className="pb-24 pt-6">
@@ -242,8 +279,8 @@ const getAuthors = async()=>{
               <div className="lg:col-span-3">{/* Your content */}
               <div class=" grid  gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 {
-  kitoblar.map((el)=>(
-    <div class="relative flex w-full  flex-row rounded-xl bg-white bg-clip-border text-gray-700 shadow-md ml-3 mt-3">
+  kitoblar?.map((el)=>(
+    <div key={el._id} class="relative flex w-full  flex-row rounded-xl bg-white bg-clip-border text-gray-700 shadow-md ml-3 mt-3">
   
     <div class="p-6">
       <h6 class="mb-4 block font-sans text-base font-semibold uppercase leading-relaxed tracking-normal text-pink-500 antialiased">

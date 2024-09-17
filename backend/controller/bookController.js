@@ -1,5 +1,23 @@
 const bookModel = require("../model/bookModel");
 const mongoose = require("mongoose");
+
+
+const searchBook = async (req, res) => {
+  try {
+    const {query} = req.query
+    let dataB = await bookModel.find({
+      $or: [
+        { title: { $regex: query,$options: 'i' } },
+        { summary: { $regex: query,$options: 'i' } },
+        { name: { $regex: query,$options: 'i' } },
+      ],
+    });
+    res.status(200).json({success: true, dataB});
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const addBook = async (req, res) => {
   try {
     const { title, category, author } = req.body;
@@ -109,20 +127,7 @@ const deletBook = async (req, res) => {
     });
   }
 };
-const searchBook = async (req, res) => {
-  try {
-    let dataB = await bookModel.find({
-      $or: [
-        { title: { $regex: req.params.key } },
-        { summary: { $regex: req.params.key } },
-        { name: { $regex: req.params.key } },
-      ],
-    });
-    res.send(dataB);
-  } catch (error) {
-    console.log(error);
-  }
-};
+
 
 const getBooksByCategory = async (req, res) => {
   try {
@@ -154,11 +159,12 @@ const getBooksByAuthors = async (req, res) => {
 
 module.exports = {
   addBook,
+  searchBook,
   getBooks,
   singleBook,
   updateBook,
   deletBook,
-  searchBook,
+ 
   getBooksByCategory,
   getBooksByAuthors,
  

@@ -14,10 +14,11 @@ const {
 
 router.post("/books", addBook);
 router.get("/books", getBooks);
+router.get("/books/search", searchBook);
 router.get("/books/:id", singleBook);
 router.put("/books/:id", updateBook);
 router.delete("/books/:id", deletBook);
-router.get("/books/search/:key", searchBook);
+
 router.get("/books/category/:categoryId", getBooksByCategory);
 router.get("/books/author/:authorId", getBooksByAuthors);
 
