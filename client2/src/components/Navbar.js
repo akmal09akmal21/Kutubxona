@@ -1,0 +1,245 @@
+import { useState } from "react";
+
+
+const Navbar = ()=>{
+    const [nav, setNav] = useState(false);
+
+
+    return(
+        <>
+        
+        
+
+<nav class="bg-white border-gray-200 dark:bg-gray-900">
+  <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+    <a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse">
+        <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo" />
+        <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
+    </a>
+    <button onClick={()=> setNav(!nav)} data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
+        <span class="sr-only">Open main menu</span>
+        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+        </svg>
+    </button>
+ 
+    {nav ? (
+    <div class=" w-full md:block md:w-auto" id="navbar-default">
+           <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+             <li>
+               <a href="#" class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500" aria-current="page">Home</a>
+             </li>
+             <li>
+               <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">About</a>
+             </li>
+             <li>
+               <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Services</a>
+             </li>
+             <li>
+               <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Pricing</a>
+             </li>
+             <li>
+               <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Contact</a>
+             </li>
+           </ul>
+         </div>
+):(   <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+    <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+      <li>
+        <a href="#" class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500" aria-current="page">Home</a>
+      </li>
+      <li>
+        <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">About</a>
+      </li>
+      <li>
+        <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Services</a>
+      </li>
+      <li>
+        <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Pricing</a>
+      </li>
+      <li>
+        <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Contact</a>
+      </li>
+    </ul>
+  </div>)}
+ 
+   </div>
+  
+ </nav>
+
+     </>
+    )
+}
+
+export default Navbar
+// import React, { useState } from "react";
+// import { NavLink } from "react-router-dom";
+
+// function Navbar() {
+//   const [nav, setNav] = useState(false);
+
+//   return (
+//     <header className="bg-purple-300 p-5 mb-4 rounded-2xl sticky top-0">
+//       <div className="flex">
+//         <a href="/">
+//           <h1 className="my-auto font-bold text-[22px] lg:text-3xl uppercase pr-2 mr-2 border-r-2 border-purple-500 lg:pr-5 lg:mr-5">
+//             Navbar
+//           </h1>
+//         </a>
+//         <span className="my-auto mr-2 lg:hidden" onClick={() => setNav(!nav)}>
+//           <svg
+//             xmlns="http://www.w3.org/2000/svg"
+//             fill="none"
+//             viewBox="0 0 24 24"
+//             stroke-width="2"
+//             stroke="currentColor"
+//             className="w-6 h-6"
+//           >
+//             <path
+//               stroke-linecap="round"
+//               stroke-linejoin="round"
+//               d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12"
+//             />
+//           </svg>
+//         </span>
+//         <div className="my-auto">
+//           <ul className="hidden lg:flex uppercase font-bold">
+//             <NavLink
+//               to="/"
+//               style={({ isActive }) => ({
+//                 color: isActive ? "rgb(107, 33, 168)" : "#000",
+//                 textDecoration: "none",
+//               })}
+//             >
+//               <li className="mr-10 p-1 border-2 border-transparent hover:text-black hover:border-purple-500 hover:bg-white rounded">
+//                 Home
+//               </li>
+//             </NavLink>
+//             <NavLink
+//               to="/about"
+//               style={({ isActive }) => ({
+//                 color: isActive ? "rgb(107, 33, 168)" : "#000",
+//                 textDecoration: "none",
+//               })}
+//             >
+//               <li className="mr-10 p-1 border-2 border-transparent hover:text-black hover:border-purple-500 hover:bg-white rounded">
+//                 About
+//               </li>
+//             </NavLink>
+//             <NavLink
+//               to="/portfolio"
+//               style={({ isActive }) => ({
+//                 color: isActive ? "rgb(107, 33, 168)" : "#000",
+//                 textDecoration: "none",
+//               })}
+//             >
+//               <li className="mr-10 p-1 border-2 border-transparent hover:text-black hover:border-purple-500 hover:bg-white rounded">
+//                 Portfolio
+//               </li>
+//             </NavLink>
+//             <NavLink
+//               to="/feedback"
+//               style={({ isActive }) => ({
+//                 color: isActive ? "rgb(107, 33, 168)" : "#000",
+//                 textDecoration: "none",
+//               })}
+//             >
+//               <li className="mr-10 p-1 border-2 border-transparent hover:text-black hover:border-purple-500 hover:bg-white rounded">
+//                 Feedback
+//               </li>
+//             </NavLink>
+//             <NavLink
+//               to="/contact"
+//               style={({ isActive }) => ({
+//                 color: isActive ? "rgb(107, 33, 168)" : "#000",
+//                 textDecoration: "none",
+//               })}
+//             >
+//               <li className="mr-5 p-1 border-2 border-transparent hover:text-black hover:border-purple-500 hover:bg-white rounded">
+//                 Contact
+//               </li>
+//             </NavLink>
+//           </ul>
+//         </div>
+//         <a
+//           href="https://github.com/PugazhendhiDev/"
+//           className="my-auto ml-auto flex text-white font-bold bg-red-400 p-1 rounded lg:rounded-xl lg:px-5 lg:py-2"
+//         >
+//             ffffffffffff
+//           <svg
+//             xmlns="http://www.w3.org/2000/svg"
+//             fill="none"
+//             viewBox="0 0 24 24"
+//             stroke-width="2"
+//             stroke="currentColor"
+//             className="w-6 h-6"
+//           >
+//             <path
+//               stroke-linecap="round"
+//               stroke-linejoin="round"
+//               d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"
+//             />
+//           </svg>
+//           <h1 className="hidden uppercase ml-2 lg:block">Hire</h1>
+//         </a>
+//       </div>
+//       {nav && (
+//         <div
+//           id="menu"
+//           className="mt-5 p-5 bg-white border-2 border-purple-500 rounded-2xl"
+//           onClick={() => setNav(!nav)}
+//         >
+//           <ul className="font-bold ">
+//             <NavLink
+//               to="/"
+//               style={({ isActive }) => ({
+//                 color: isActive ? "rgb(107, 33, 168)" : "#000",
+//                 textDecoration: "none",
+//               })}
+//             >
+//               <li className="mb-2 hover:text-purple-500">Home</li>
+//             </NavLink>
+//             <NavLink
+//               to="/about"
+//               style={({ isActive }) => ({
+//                 color: isActive ? "rgb(107, 33, 168)" : "#000",
+//                 textDecoration: "none",
+//               })}
+//             >
+//               <li className="mb-2 hover:text-purple-500">About</li>
+//             </NavLink>
+//             <NavLink
+//               to="/portfolio"
+//               style={({ isActive }) => ({
+//                 color: isActive ? "rgb(107, 33, 168)" : "#000",
+//                 textDecoration: "none",
+//               })}
+//             >
+//               <li className="mb-2 hover:text-purple-500">Portfolio</li>
+//             </NavLink>
+//             <NavLink
+//               to="/feedback"
+//               style={({ isActive }) => ({
+//                 color: isActive ? "rgb(107, 33, 168)" : "#000",
+//                 textDecoration: "none",
+//               })}
+//             >
+//               <li className="mb-2 hover:text-purple-500">Feedback</li>
+//             </NavLink>
+//             <NavLink
+//               to="/contact"
+//               style={({ isActive }) => ({
+//                 color: isActive ? "rgb(107, 33, 168)" : "#000",
+//                 textDecoration: "none",
+//               })}
+//             >
+//               <li className="hover:text-purple-500">Contact</li>
+//             </NavLink>
+//           </ul>
+//         </div>
+//       )}
+//     </header>
+//   );
+// }
+
+// export default Navbar;

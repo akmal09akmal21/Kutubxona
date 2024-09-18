@@ -34,7 +34,6 @@ const AddBook = () => {
         toast.success(data.message);
         navigate("/kitoblar");
       }
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -48,9 +47,7 @@ const AddBook = () => {
 
   const getCategory = async () => {
     try {
-      const { data } = await axios.get("http://localhost:5000/categories", {
-        withCredentials: true,
-      });
+      const { data } = await axios.get("http://localhost:5000/categories");
       setCategories(data.categories);
     } catch (error) {
       console.log(error.response.data);

@@ -11,7 +11,7 @@ const addCategory = async (req, res) => {
     res.status(201).json({
       success: true,
       message: "category tzimga qoshildi",
-      newCategory: newCategory,
+       newCategory,
     });
   } catch (error) {
     console.log(error);

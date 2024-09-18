@@ -6,23 +6,21 @@ import {
   DialogBackdrop,
   DialogPanel,
 
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuItems,
+ 
 } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
-import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
+import {  FunnelIcon } from '@heroicons/react/20/solid'
 import axios from 'axios'
 import { toast } from 'react-toastify'
+import { Link } from 'react-router-dom'
 
 
 
 
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
-}
+// function classNames(...classes) {
+//   return classes.filter(Boolean).join(' ')
+// }
 
 export default function BookLists() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
@@ -75,7 +73,6 @@ const getCategories = async()=>{
     try {
       const response = await axios.get(`http://localhost:5000/books/author/${authorId}`);
       setKitoblar(response.data.booksAuthors);
-      console.log(response.data)
     } catch (error) {
       console.error('Error fetching books:', error);
     }
@@ -97,7 +94,6 @@ const getCategories = async()=>{
   try {
     const response = await axios.get(`http://localhost:5000/books/category/${categoryId}`);
     setKitoblar(response.data.booksCategory);
-    console.log(response.data)
   } catch (error) {
     console.error('Error fetching books:', error);
   }
@@ -124,7 +120,6 @@ const handleSearch = async(e)=>{
   setSearch(query)
   if(query.length>0){
     try {
-      const res = await axios.get(`http://localhost:5000/books`);
       const {data} = await axios.get(`http://localhost:5000/books/search?query=${query}`);
      
      
@@ -215,9 +210,9 @@ const handleSearch = async(e)=>{
                 placeholder="kitoblar qidirish..."
               />
             </div>
-            <div className="flex items-center">
+            <div className=" flex items-center">
              
-              <select value={categorySelected} onChange={handleCategoryChange} class="category1 py-3 px-4 pe-9 block w-full bg-gray-100 border-transparent rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none">
+              <select value={categorySelected} onChange={handleCategoryChange} class="category1 mr-3 py-3 px-4 pe-9 block w-full bg-gray-100 border-transparent rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none">
   <option value=" ">All Category</option>
   {
     categories.map((cat)=>(
@@ -239,15 +234,13 @@ const handleSearch = async(e)=>{
   }
 </select>
 
-              {/* <button type="button" className="-m-2 ml-5 p-2 text-gray-400 hover:text-gray-500 sm:ml-7">
-                <span className="sr-only">View grid</span>
-                <Squares2X2Icon aria-hidden="true" className="h-5 w-5" />
-              </button> */}
+              
               <button
                 type="button"
                 onClick={() => setMobileFiltersOpen(true)}
                 className="-m-2 ml-4 p-2 text-gray-400 hover:text-gray-500 sm:ml-6 lg:hidden"
               >
+
                 <span className="sr-only">Filters</span>
                 <FunnelIcon aria-hidden="true" className="h-5 w-5" />
               </button>
@@ -261,15 +254,27 @@ const handleSearch = async(e)=>{
             </h2>
 
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
-              {/* Filters */}
+              {/* Menu */}
               <form className="hidden lg:block ">
                 <h3 className="sr-only">Categories</h3>
-                <ul role="list" className="space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900">
-                  {authors.map((category) => (
-                    <li key={category.name}>
-                      <a href={category.href}>{category.name}</a>
+             
+                 <ul role="list" className="space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900">
+                 
+                    <li >
+                      <Link >akmal</Link>
                     </li>
-                  ))}
+                    <li >
+                      <Link >akmal</Link>
+                    </li> <li >
+                      <Link >akmal</Link>
+                    </li> <li >
+                      <Link >akmal</Link>
+                    </li> <li >
+                      <Link >akmal</Link>
+                    </li> <li >
+                      <Link >akmal</Link>
+                    </li>
+                  
                 </ul>
 
            
