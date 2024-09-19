@@ -5,25 +5,26 @@ import { toast } from "react-toastify"
 
 
 
-const UpdateCategory = ()=>{
+
+const UpdateAuthor = ()=>{
     const {id} = useParams()
     const navigate = useNavigate()
-    let localCategory = JSON.parse(localStorage.getItem("category"))
+    let localAuthor = JSON.parse(localStorage.getItem("author"))
     const [cat, setCat] = useState({
-        name: localCategory.name,
-        description: localCategory.description,
+        name: localAuthor.name,
+        biography: localAuthor.biography,
       });
 
-const catSubmit = async(e)=>{
+const autSubmit = async(e)=>{
     e.preventDefault()
     try {
         let {data} = await axios.put(
-            `http://localhost:5000/categories/${id}`,
+            `http://localhost:5000/authors/${id}`,
            cat
           );
           if (data.success === true) {
            toast.success(data.message)
-            navigate("/addcat");
+            navigate("/addauthor");
           }
         } catch (error) {
           console.log(error);
@@ -39,7 +40,7 @@ const changeHandler = (e) => {
         <>
           <div className="max-w-lg lg:ms-auto mx-auto text-center ">
         <div className="py-16 px-7 rounded-md bg-white">
-          <form className="" onSubmit={catSubmit}>
+          <form className="" onSubmit={autSubmit}>
             <div className="grid w-full grid-cols-1 gap-6">
 
               <div className="md:col-span-2">
@@ -59,10 +60,10 @@ const changeHandler = (e) => {
               <div className="md:col-span-2">
                 <textarea
                   type="text"
-                  name="description"
+                  name="biography"
                   rows="5"
                   onChange={changeHandler}
-                  value={cat.description}
+                  value={cat.biography}
                   cols=""
                   placeholder="Qisqacha tavsifi *"
                   className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-700"
@@ -74,7 +75,7 @@ const changeHandler = (e) => {
                   type="submit"
                   className="py-3 text-base font-medium rounded text-white bg-blue-800 w-full hover:bg-blue-700 transition duration-300"
                 >
-                  pUT Category +
+                  pUT Author +
                 </button>
               </div>
             </div>
@@ -85,4 +86,4 @@ const changeHandler = (e) => {
     )
 }
 
-export default UpdateCategory
+export default UpdateAuthor

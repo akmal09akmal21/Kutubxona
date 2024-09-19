@@ -1,6 +1,4 @@
 const bookModel = require("../model/bookModel");
-const mongoose = require("mongoose");
-
 
 const searchBook = async (req, res) => {
   try {
@@ -27,12 +25,7 @@ const addBook = async (req, res) => {
         .status(401)
         .json({ success: false, message: "Bu kitob tizimda mavjud" });
     }
-    if (!mongoose.Types.ObjectId.isValid(category)) {
-      return res.status(400).json({ message: "Invalid category ID." });
-    }
-    if (!mongoose.Types.ObjectId.isValid(author)) {
-      return res.status(400).json({ message: "Invalid category ID." });
-    }
+  
     const newBook = await bookModel.create(req.body);
     res
       .status(201)
@@ -48,9 +41,17 @@ const addBook = async (req, res) => {
 };
 
 const getBooks = async (req, res) => {
+  
   try {
+    const page = parseInt(req.query.page) || 1; // Sahifani oling
+    const limit = parseInt(req.query.limit) || 5; // Sahifa hajmini oling
+    const skip = (page - 1) * limit; // Qaysi ma'lumotlardan boshlash kerakligini hisoblash
+
+
     const books = await bookModel
       .find()
+      .skip(skip)
+      .limit(limit)
       .populate("author")
       .populate("category");
     if (!books) {
@@ -58,20 +59,31 @@ const getBooks = async (req, res) => {
         .status(404)
         .json({ success: false, message: "kitoblar mavjud emas" });
     }
+    
+    // Umumiy elementlar sonini hisoblash
+    const total = await bookModel.countDocuments();
+
     res.status(200).json({
       success: true,
       message: "kitoblar success",
       Kitoblas_SONI: books.length,
+     
+    
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+      jami_kitoblar: total,
       books,
     });
   } catch (error) {}
 };
 
 const singleBook = async (req, res) => {
+  // if (!mongoose.Types.ObjectId.isValid(id)) {
+  //   return res.status(400).json({ message: 'Invalid book ID' });
+  // }
   try {
-    const singleID = req.params.id;
     const oneBook = await bookModel
-      .findById(singleID)
+      .findById(req.params.id)
       .populate("author")
       .populate("category");
     res
@@ -130,6 +142,7 @@ const deletBook = async (req, res) => {
 
 
 const getBooksByCategory = async (req, res) => {
+
   try {
     const booksCategory = await bookModel
       .find({ category: req.params.categoryId })

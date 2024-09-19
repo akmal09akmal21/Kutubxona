@@ -1,50 +1,80 @@
+import axios from "axios"
+import { useEffect, useState } from "react"
+import { toast } from "react-toastify"
+import { useNavigate } from 'react-router-dom';
 
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
 
 
-const AddAuthor = ()=>{
-    const [name, setName] = useState("");
-    const [biography, setBiography] = useState("");
+const AddAuthor = () =>{
+    const [name,setName] = useState("")
+    const [biography,setBiography] = useState("")
     const [authors,setAuthors] = useState([])
+    const navigate = useNavigate()
 
+    const getauthors = async()=>{
+        try {
+            const {data} =await axios.get("http://localhost:5000/authors")
+            setAuthors(data.mualliflar)
+        } catch (error) {
+            console.log(error)
+            toast.error(error.response.data.message)
+            
+        }
+    }
 
+    useEffect(()=>{
+        getauthors()
+    },[])
 
     const handleSubmit = async(e)=>{
         e.preventDefault()
         try {
-            const {data} = await axios.post("http://localhost:5000/authors",{name,biography})
+            const {data} = await axios.post("http://localhost:5000/authors",{
+                name,
+                biography
+            })
+     
+            
             if(data.success === true){
                 setName("")
                 setBiography("")
                 toast.success(data.message)
             }
+
         } catch (error) {
-            console.log(error.response.data.message);
-      toast.error(error.response.data.message);
+            console.log(error)
+            toast.error(error.response.data.message)
             
         }
-
     }
 
-    useEffect(()=>{
-        getAuthors()
-    },[])
-const getAuthors = async()=>{
-    try {
-        const {data}= await axios.get("http://localhost:5000/authors")
-        if(data.success === true){
-           setAuthors(data.mualliflar)
-        }
-    } catch (error) {
-        
-    }
-}
+// update
+const UpdateAuthor = (elem) => {
+  localStorage.setItem("author", JSON.stringify(elem));
+  navigate(`/updateauthor/${elem._id}`);
+};
 
-    return(<>
-    <div className="max-w-lg lg:ms-auto mx-auto text-center ">
+const Delete = async (id) => {
+  try {
+    let res = await axios.delete(
+      `http://localhost:5000/authors/${id}  `
+    );
+    if (res.data.success === true) {
+     toast.success(res.data.message)
+     window.location.reload(false);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+
+};
+
+
+// paginatin
+
+    return(
+        <>
+         <div className="max-w-lg lg:ms-auto mx-auto text-center ">
         <div className="py-16 px-7 rounded-md bg-white">
           <form className="" onSubmit={handleSubmit}>
             <div className="grid w-full grid-cols-1 gap-6">
@@ -55,12 +85,12 @@ const getAuthors = async()=>{
                   id="name"
                   onChange={(e) => setName(e.target.value)}
                   value={name}
-                  placeholder="Muallif ismini yozing..."
+                  placeholder="kategoriya nomini yozing..."
                   className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-700"
                 />
               </div>
-          
-          
+              
+             
 
               <div className="md:col-span-2">
                 <textarea
@@ -86,27 +116,59 @@ const getAuthors = async()=>{
           </form>
         </div>
       </div>
-      <div>
-        <h2>Books List</h2>
-
       
 
-     {
-        authors.map((el)=>(
-            <Link href="#" key={el._id} class="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
-   
-            <div class="flex flex-col justify-between p-4 leading-normal">
-                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{el.name}</h5>
-                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{el.biography}</p>
-            </div>
-        </Link>
-        ))
-     }
-
-      </div>
+<div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" className="px-6 py-3">
+                    Product name
+                </th>
+                <th scope="col" className="px-6 py-3">
+                    Color
+                </th>
+                <th scope="col" className="px-6 py-3">
+                    Edit
+                </th>
+                <th scope="col" className="px-6 py-3">
+                    Delete
+                </th>
+                
+            </tr>
+        </thead>
+        <tbody>
+          {
+            authors.map((el)=>(
+                <tr key={el._id} className="  odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+               
+                <td className="px-6 py-4">
+                        {el.name}
+                    </td>
+                    <td className="px-6 py-4">
+                        {el.biography}
+                    </td>
+                    <td className="px-6 py-4">
+                      <button onClick={()=>UpdateAuthor(el)} >Edit</button>
+                    </td>
+                    <td className="px-6 py-4">
+                      <button  onClick={() => Delete(el._id)}> delet</button>
+                    </td>
+                  
+                  
+                  
+                </tr>
+            ))
+          }
+            
+            
+        </tbody>
+    </table>
     
-    </>)
-}
+</div>
 
+        </>
+    )
+}
 
 export default AddAuthor

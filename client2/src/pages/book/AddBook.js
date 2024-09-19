@@ -1,10 +1,9 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const AddBook = () => {
-  const navigate = useNavigate();
+
   const [categories, setCategories] = useState([]);
   const [mualliflar, setMualliflar] = useState([]);
 
@@ -32,7 +31,6 @@ const AddBook = () => {
         setYear("");
         setSumarry("");
         toast.success(data.message);
-        navigate("/kitoblar");
       }
     } catch (error) {
       console.log(error);
@@ -63,6 +61,43 @@ const AddBook = () => {
       toast.error(error.response.data);
     }
   };
+// aaaaaaaaaaaaaaaaa
+const Delete = async (id) => {
+  try {
+    let res = await axios.delete(
+      `http://localhost:5000/books/${id}  `
+    );
+    if (res.data.success === true) {
+     toast.success(res.data.message)
+     window.location.reload(false);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+
+};
+
+const [currentPage, setCurrentPage] = useState(1);
+const [totalPages, setTotalPages] = useState(1);
+const [loading, setLoading] = useState(false);
+const [kitoblar, setKitoblar] = useState([]);
+
+const fetchBooks = async (page) => {
+  try {
+    const { data } = await axios.get(`http://localhost:5000/books?page=${page}&limit=5` );
+    setKitoblar(data.books);
+    setCurrentPage(data.currentPage);
+    setTotalPages(data.totalPages);
+  } catch (error) {
+    console.log(error.response.data.message);
+    toast.error(error.response.data.message);
+  }finally {
+    setLoading(false);
+  }
+};
+useEffect(()=>{
+  fetchBooks(currentPage);
+},[currentPage])
 
   return (
     <>
@@ -148,6 +183,56 @@ const AddBook = () => {
           </form>
         </div>
       </div>
+
+      <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" className="px-6 py-3">
+                    Product name
+                </th>
+                <th scope="col" className="px-6 py-3">
+                    Color
+                </th>
+                <th scope="col" className="px-6 py-3">
+                    Edit
+                </th>
+                <th scope="col" className="px-6 py-3">
+                    Delete
+                </th>
+                
+            </tr>
+        </thead>
+        <tbody>
+          {
+            kitoblar.map((el)=>(
+                <tr key={el._id} className="  odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+               
+                <td className="px-6 py-4">
+                        {el.title}
+                    </td>
+                    <td className="px-6 py-4">
+                        {el.summary}
+                    </td>
+                    <td className="px-6 py-4">
+                     s {/* <button onClick={()=>UpdateAuthor(el)} >Edit</button> */}
+                    </td>
+                    <td className="px-6 py-4">
+                      <button  onClick={() => Delete(el._id)}> delet</button>
+                    </td>
+                  
+                  
+                  
+                </tr>
+            ))
+          }
+            
+            
+        </tbody>
+    </table>
+    
+</div>
+
     </>
   );
 };

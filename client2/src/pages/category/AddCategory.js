@@ -60,13 +60,17 @@ const Delete = async (id) => {
       `http://localhost:5000/categories/${id}  `
     );
     if (res.data.success === true) {
-      alert("delet user");
+     toast.success(res.data.message)
     }
   } catch (error) {
     console.log(error);
   }
   window.location.reload(false);
 };
+
+
+// paginatin
+
     return(
         <>
          <div className="max-w-lg lg:ms-auto mx-auto text-center ">
@@ -159,6 +163,7 @@ const Delete = async (id) => {
             
         </tbody>
     </table>
+    
 </div>
 
         </>

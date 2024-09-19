@@ -25,28 +25,39 @@ import { Link } from 'react-router-dom'
 export default function BookLists() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
   const [kitoblar, setKitoblar] = useState([]);
-  console.log(kitoblar)
   const [authors,setAuthors] = useState([])
   const [categories,setCategories] = useState([])
   const [authorSelected, setSelectedAuthor] = useState('');
   const [categorySelected, setSelectedCategory] = useState('');
-  const fetchBooks = async () => {
+
+  
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(false);
+
+  const fetchBooks = async (page) => {
     try {
-      const { data } = await axios.get("http://localhost:5000/books" );
+      const { data } = await axios.get(`http://localhost:5000/books?page=${page}&limit=5` );
       setKitoblar(data.books);
+      setCurrentPage(data.currentPage);
+      setTotalPages(data.totalPages);
     } catch (error) {
       console.log(error.response.data.message);
       toast.error(error.response.data.message);
+    }finally {
+      setLoading(false);
     }
   };
   useEffect(() => {
-    fetchBooks();
+    
     getAuthors()
     getCategories()
     fetchBooksByAuthor()
     fetchBooksByCategory()
   }, []);
-
+useEffect(()=>{
+  fetchBooks(currentPage);
+},[currentPage])
 
   const getAuthors = async()=>{
     try {
@@ -127,13 +138,29 @@ const handleSearch = async(e)=>{
     } catch (error) {
       console.error('Xato:', error);
     }
-  } else if(query.length ==="") {
-    const res = await axios.get(`http://localhost:5000/books`);
-    setKitoblar(res.books); // Agar qidiruv so'zi bo'sh bo'lsa, natijalarni tozalash
+  } else {
+    const res = await axios.get(`http://localhost:5000/books?page=${e}&limit=5`);
+    setKitoblar(res.data.books); // Agar qidiruv so'zi bo'sh bo'lsa, natijalarni tozalash
   }
   
 }
 
+
+
+
+ 
+
+  const handleNext = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePrev = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
 
   return (
     <div className="bg-white">
@@ -280,10 +307,30 @@ const handleSearch = async(e)=>{
            
               </form>
 
+
+  
+
+
               {/* Product grid */}
               <div className="lg:col-span-3">{/* Your content */}
+              <div class="flex flex-col items-center">
+  {/* <!-- Help text --> */}
+  <span class="text-sm text-gray-700 dark:text-gray-400">
+      page <span class="font-semibold text-gray-900 dark:text-white">{currentPage}</span> to <span class="font-semibold text-gray-900 dark:text-white">{totalPages}</span> 
+  </span>
+  {/* <!-- Buttons --> */}
+  <div class="inline-flex mt-2 xs:mt-0">
+      <button onClick={handlePrev} disabled={currentPage === 1} class="flex items-center justify-center px-4 h-10 text-base font-medium text-white bg-gray-800 rounded-s hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+          Prev
+      </button>
+      <button onClick={handleNext} disabled={currentPage === totalPages} class="flex items-center justify-center px-4 h-10 text-base font-medium text-white bg-gray-800 border-0 border-s border-gray-700 rounded-e hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+          Next
+      </button>
+  </div>
+</div>
               <div class=" grid  gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 {
+loading ? (<p>loadign</p>): (
   kitoblar?.map((el)=>(
     <div key={el._id} class="relative flex w-full  flex-row rounded-xl bg-white bg-clip-border text-gray-700 shadow-md ml-3 mt-3">
   
@@ -295,13 +342,10 @@ const handleSearch = async(e)=>{
        {el.summary}
       </h4>
       <p class="mb-8 block font-sans text-base font-normal leading-relaxed text-gray-700 antialiased">
-        Like so many organizations these days, Autodesk is a company in
-        transition. It was until recently a traditional boxed software company
-        selling licenses. Yet its own business model disruption is only part of
-        the story
+    
       </p>
      <div className='flex flex-row items-center justify-between'>
-     <a class="inline-block" href="#">
+     <Link class="inline-block" to={`/singlebook/${el._id}`}>
         <button
           class="flex select-none items-center gap-2 rounded-lg py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-pink-500 transition-all hover:bg-pink-500/10 active:bg-pink-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
           type="button"
@@ -323,17 +367,22 @@ const handleSearch = async(e)=>{
             ></path>
           </svg>
         </button>
-      </a>
+      </Link>
       <span className='text-gray-400'>{el.publishedYear}</span>
      </div>
     </div>
   </div>
   ))
+)
 }
 
 
  
               </div>
+              <div>
+  
+   
+    </div>
                 
 
               </div>
