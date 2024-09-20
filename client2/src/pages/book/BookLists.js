@@ -88,14 +88,17 @@ const getCategories = async()=>{
       console.error('Error fetching books:', error);
     }
   };
-    const handleAuthorChange = (e) => {
+
+
+    const handleAuthorChange =async (e) => {
     const authorId = e.target.value;
     setSelectedAuthor(authorId);
     if (authorId) {
       fetchBooksByAuthor(authorId);
-    } else if(authorId === " "){
-      
-      setKitoblar([]);
+    } 
+    if(!authorId){
+ 
+      setKitoblar();
     }
   };
 
@@ -116,7 +119,7 @@ const getCategories = async()=>{
     setSelectedCategory(categoryId);
     if (categoryId) {
       fetchBooksByCategory(categoryId);
-    } else if(categoryId === " "){
+    } else {
       
       setKitoblar([]);
     }
@@ -239,7 +242,7 @@ const handleSearch = async(e)=>{
             </div>
             <div className=" flex items-center">
              
-              <select value={categorySelected} onChange={handleCategoryChange} class="category1 mr-3 py-3 px-4 pe-9 block w-full bg-gray-100 border-transparent rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none">
+              <select value={categorySelected} onChange={handleCategoryChange} className="category1 mr-3 py-3 px-4 pe-9 block w-full bg-gray-100 border-transparent rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none">
   <option value=" ">All Category</option>
   {
     categories.map((cat)=>(
@@ -250,7 +253,7 @@ const handleSearch = async(e)=>{
   }
 </select>
     
-<select value={authorSelected} onChange={handleAuthorChange} class=" author1 py-3 px-4 pe-9 block w-full bg-gray-100 border-transparent rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none">
+<select value={authorSelected} onChange={handleAuthorChange} className=" author1 py-3 px-4 pe-9 block w-full bg-gray-100 border-transparent rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none">
   <option value=" ">All Authors</option>
   {
     authors.map((author)=>(
@@ -313,41 +316,41 @@ const handleSearch = async(e)=>{
 
               {/* Product grid */}
               <div className="lg:col-span-3">{/* Your content */}
-              <div class="flex flex-col items-center">
+              <div className="flex flex-col items-center">
   {/* <!-- Help text --> */}
-  <span class="text-sm text-gray-700 dark:text-gray-400">
-      page <span class="font-semibold text-gray-900 dark:text-white">{currentPage}</span> to <span class="font-semibold text-gray-900 dark:text-white">{totalPages}</span> 
+  <span className="text-sm text-gray-700 dark:text-gray-400">
+      page <span className="font-semibold text-gray-900 dark:text-white">{currentPage}</span> to <span className="font-semibold text-gray-900 dark:text-white">{totalPages}</span> 
   </span>
   {/* <!-- Buttons --> */}
-  <div class="inline-flex mt-2 xs:mt-0">
-      <button onClick={handlePrev} disabled={currentPage === 1} class="flex items-center justify-center px-4 h-10 text-base font-medium text-white bg-gray-800 rounded-s hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+  <div className="inline-flex mt-2 xs:mt-0">
+      <button onClick={handlePrev} disabled={currentPage === 1} className="flex items-center justify-center px-4 h-10 text-base font-medium text-white bg-gray-800 rounded-s hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
           Prev
       </button>
-      <button onClick={handleNext} disabled={currentPage === totalPages} class="flex items-center justify-center px-4 h-10 text-base font-medium text-white bg-gray-800 border-0 border-s border-gray-700 rounded-e hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+      <button onClick={handleNext} disabled={currentPage === totalPages} className="flex items-center justify-center px-4 h-10 text-base font-medium text-white bg-gray-800 border-0 border-s border-gray-700 rounded-e hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
           Next
       </button>
   </div>
 </div>
-              <div class=" grid  gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              <div className=" grid  gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 {
 loading ? (<p>loadign</p>): (
   kitoblar?.map((el)=>(
-    <div key={el._id} class="relative flex w-full  flex-row rounded-xl bg-white bg-clip-border text-gray-700 shadow-md ml-3 mt-3">
+    <div key={el._id} className="relative flex w-full  flex-row rounded-xl bg-white bg-clip-border text-gray-700 shadow-md ml-3 mt-3">
   
-    <div class="p-6">
-      <h6 class="mb-4 block font-sans text-base font-semibold uppercase leading-relaxed tracking-normal text-pink-500 antialiased">
+    <div className="p-6">
+      <h6 className="mb-4 block font-sans text-base font-semibold uppercase leading-relaxed tracking-normal text-pink-500 antialiased">
        {el.title}
       </h6>
-      <h4 class="mb-2 block font-sans text-2xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
+      <h4 className="mb-2 block font-sans text-2xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
        {el.summary}
       </h4>
-      <p class="mb-8 block font-sans text-base font-normal leading-relaxed text-gray-700 antialiased">
+      <p className="mb-8 block font-sans text-base font-normal leading-relaxed text-gray-700 antialiased">
     
       </p>
      <div className='flex flex-row items-center justify-between'>
-     <Link class="inline-block" to={`/singlebook/${el._id}`}>
+     <Link className="inline-block" to={`/singlebook/${el._id}`}>
         <button
-          class="flex select-none items-center gap-2 rounded-lg py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-pink-500 transition-all hover:bg-pink-500/10 active:bg-pink-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+          className="flex select-none items-center gap-2 rounded-lg py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-pink-500 transition-all hover:bg-pink-500/10 active:bg-pink-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
           type="button"
         >
           Learn More
@@ -355,14 +358,14 @@ loading ? (<p>loadign</p>): (
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
-            stroke-width="2"
+            strokeWidth="2"
             stroke="currentColor"
             aria-hidden="true"
-            class="h-4 w-4"
+            className="h-4 w-4"
           >
             <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
             ></path>
           </svg>

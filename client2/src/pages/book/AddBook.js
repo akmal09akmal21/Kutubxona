@@ -98,6 +98,17 @@ const fetchBooks = async (page) => {
 useEffect(()=>{
   fetchBooks(currentPage);
 },[currentPage])
+const handleNext = () => {
+  if (currentPage < totalPages) {
+    setCurrentPage(currentPage + 1);
+  }
+};
+
+const handlePrev = () => {
+  if (currentPage > 1) {
+    setCurrentPage(currentPage - 1);
+  }
+};
 
   return (
     <>
@@ -185,18 +196,37 @@ useEffect(()=>{
       </div>
 
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+      <div className="flex flex-col items-center">
+  {/* <!-- Help text --> */}
+  <span className="text-sm text-gray-700 dark:text-gray-400">
+      page <span className="font-semibold text-gray-900 dark:text-white">{currentPage}</span> to <span className="font-semibold text-gray-900 dark:text-white">{totalPages}</span> 
+  </span>
+  {/* <!-- Buttons --> */}
+  <div className="inline-flex mt-2 xs:mt-0">
+      <button onClick={handlePrev} disabled={currentPage === 1} className="flex items-center justify-center px-4 h-10 text-base font-medium text-white bg-gray-800 rounded-s hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+          Prev
+      </button>
+      <button onClick={handleNext} disabled={currentPage === totalPages} className="flex items-center justify-center px-4 h-10 text-base font-medium text-white bg-gray-800 border-0 border-s border-gray-700 rounded-e hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+          Next
+      </button>
+  </div>
+</div>
     <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
                 <th scope="col" className="px-6 py-3">
-                    Product name
+                    kitob title
                 </th>
                 <th scope="col" className="px-6 py-3">
-                    Color
+                    Tasnifi
                 </th>
                 <th scope="col" className="px-6 py-3">
-                    Edit
+                    Muallif
                 </th>
+                <th scope="col" className="px-6 py-3">
+                    Categoriyasi
+                </th>
+               
                 <th scope="col" className="px-6 py-3">
                     Delete
                 </th>
@@ -215,10 +245,15 @@ useEffect(()=>{
                         {el.summary}
                     </td>
                     <td className="px-6 py-4">
-                     s {/* <button onClick={()=>UpdateAuthor(el)} >Edit</button> */}
+                        {el.author.name}
                     </td>
                     <td className="px-6 py-4">
-                      <button  onClick={() => Delete(el._id)}> delet</button>
+                        {el.category.name}
+                    </td>
+                 
+                    <td className="px-6 py-4">
+                    <button type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"  onClick={() => Delete(el._id)}>Delet</button>
+                   
                     </td>
                   
                   
